@@ -16,11 +16,6 @@ def index():
     return render_template("index.html", channels=channels)
 
 
-@socketio.on("new channel")
-def channel(data):
-    channel = data["channel"]
-    emit("channel list", {"channel": channel}, broadcast=True)
-
 
 
 if __name__ == '__main__':

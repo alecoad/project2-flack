@@ -55,28 +55,28 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#channel-submit').disabled = true;
     };
 
-    // Connect to websocket
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    // Channel submission function
+    document.querySelector('#new-channel').onsubmit = () => {
 
-    // When connected, configure submit button
-    socket.on('connect', () => {
+        // Get the suggested new channel name
+        const channel = document.querySelector('#channel').value;
 
-        // Submit should emit a "new channel" event
-        document.querySelector('#new-channel').onsubmit = () => {
-            const channel = document.querySelector('#channel').value;
-            socket.emit('new channel', {'channel': channel});
-        };
-    });
 
-    // When a new channel is announced, add to the unordered list
-    socket.on('channel list', data => {
+        // Create new item for list
         const li = document.createElement('li');
-        li.innerHTML = `Channel: ${data.channel}`;
+        li.innerHTML = document.querySelector('#channel').value;
+
+        // Add new item to channel list
         document.querySelector('#channel-list').append(li);
-    });
 
+        // Clear input field and disable button again
+        document.querySelector('#channel').value = '';
+        document.querySelector('#channel-submit').disabled = true;
 
-
+        // Stop form from submitting
+        return false;
+    };
+    
 
     // Listen for logout event
     document.querySelector('#logout').onclick = () => {
