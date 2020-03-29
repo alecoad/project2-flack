@@ -7,10 +7,19 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
+# Store list of all the channels
+channels = []
+
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", channels=channels)
+
+
+@socketio.on("new channel")
+def channel(data):
+    channel = data["channel"]
+    emit("channel list", {"channel": channel}, broadcast=True)
 
 
 

@@ -23,13 +23,22 @@
         <title>Flack</title>
     </head>
     <body>
-        <form id="nameform">
+        <form id="name-form">
             <input id="name" autocomplete="off" autofocus placeholder="Display Name" type="text">
-            <input id="submit" type="submit">
+            <input id="name-submit" type="submit">
         </form>
-        <h1 id="namedisplay">Display name: </h1>
+        <h1 id="name-display">DISPLAY NAME</h1>
+
+        <h2>Channels</h2>
+        <ul id="channel-list">
+        </ul>
+        <form id="new-channel">
+            <input id="channel" autocomplete="off" placeholder="Channel Name" type="text">
+            <input id="channel-submit" type="submit">
+        </form>
 
         <footer>
             <button id="logout" type="button" onclick="localStorage.clear()">Log Out</button>
+        </footer>
     </body>
 </html>
