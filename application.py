@@ -9,18 +9,19 @@ socketio = SocketIO(app)
 
 # Store list of all the channels
 channels = []
+votes = {"yes": 0, "no": 0, "maybe": 0}
 
 
 @app.route("/")
 def index():
-    return render_template("index.html", channels=channels)
+    return render_template("index.html", votes=votes)
 
 
 @socketio.on("new channel")
-def channel(data):
+def vote(data):
     channel = data["channel"]
-    emit("channel list", {"channel": channel}, broadcast=True)
-
+    channels.append(channel)
+    emit("announce channel", {"channel": channel}, broadcast=True)
 
 
 if __name__ == '__main__':

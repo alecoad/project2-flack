@@ -58,23 +58,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    // When connected, configure submit button
     socket.on('connect', () => {
 
-        // Submit should emit a "new channel" event
-        document.querySelector('#new-channel').onsubmit = () => {
-            const channel = document.querySelector('#channel').value;
+        // Form submission should emit a "new channel" event
+        document.querySelector('#channel-form').onsubmit = () => {
+            const selection = document.querySelector('#channel').value;
             socket.emit('new channel', {'channel': channel});
-        };
+        });
     });
 
     // When a new channel is announced, add to the unordered list
-    socket.on('channel list', data => {
+    socket.on('announce channel', data => {
         const li = document.createElement('li');
         li.innerHTML = `Channel: ${data.channel}`;
         document.querySelector('#channel-list').append(li);
     });
-
 
 
 

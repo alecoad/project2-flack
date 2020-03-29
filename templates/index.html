@@ -32,10 +32,18 @@
         <h2>Channels</h2>
         <ul id="channel-list">
         </ul>
-        <form id="new-channel">
+        <form id="channel-form">
             <input id="channel" autocomplete="off" placeholder="Channel Name" type="text">
             <input id="channel-submit" type="submit">
         </form>
+
+        <div>Yes Votes: <span id="yes">{{ votes["yes"] }}</span></div>
+        <div>No Votes: <span id="no">{{ votes["no"] }}</span></div>
+        <div>Maybe Votes: <span id="maybe">{{ votes["maybe"] }}<span></div>
+        <hr>
+        <button data-vote="yes">Yes</button>
+        <button data-vote="no">No</button>
+        <button data-vote="maybe">Maybe</button>
 
         <footer>
             <button id="logout" type="button" onclick="localStorage.clear()">Log Out</button>
