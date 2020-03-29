@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
+        <!--link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"-->
+
+        <link href="/static/styles.css" rel="stylesheet">
+        <link href="/static/favicon.ico" rel="icon">
+
+        <!-- Google Fonts -->
+        <!--link href="https://fonts.googleapis.com/css?family=Baloo+2:400,700|Liu+Jian+Mao+Cao&display=swap" rel="stylesheet"-->
+
+        <!--script src="https://code.jquery.com/jquery-3.3.1.min.js"></script-->
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script-->
+        <!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script-->
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script src="{{ url_for('static', filename='index.js') }}"></script>
+
+        <title>Flack</title>
+    </head>
+    <body>
+        <form id="nameform">
+            <input id="name" autocomplete="off" autofocus placeholder="Display Name" type="text">
+            <input id="submit" type="submit">
+        </form>
+        <h1 id="namedisplay">Display name: </h1>
+
+        <footer>
+            <button id="logout" type="button" onclick="localStorage.clear()">Log Out</button>
+    </body>
+</html>
