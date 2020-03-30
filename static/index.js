@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set display name from user input
         document.querySelector('#name-form').onsubmit = () => {
+            console.log('name submitted');
             const name = document.querySelector('#name').value;
 
             // Store name in local storage
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#name-form').style.display='none';
         const name = localStorage.getItem('name');
         document.querySelector('#name-display').innerHTML = name;
+        console.log("stored name");
     }
 
     // CHANNEL CREATION
@@ -55,33 +57,36 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#channel-submit').disabled = true;
     };
 
-    // Channel submission function
-    document.querySelector('#new-channel').onsubmit = () => {
+    // Connect to websocket
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-        // Get the suggested new channel name
-        const channel = document.querySelector('#channel').value;
+    socket.on('connect', () => {
 
+        // Form submission should emit a "submit channel" event
+        document.querySelector('#channel-form').onsubmit = () => {
+            console.log("submitted");
+            const channel = document.querySelector('#channel').value;
+            socket.emit('submit channel', {'channel': channel});
 
-        // Create new item for list
+            // Stop form from submitting
+            return false;
+        };
+    });
+
+    // When a new channel is created, add to the unordered list
+    socket.on('create channel', data => {
+        console.log("received");
         const li = document.createElement('li');
-        li.innerHTML = document.querySelector('#channel').value;
-
-        // Add new item to channel list
+        li.innerHTML = `#${data.channel}`;
         document.querySelector('#channel-list').append(li);
+    });
 
-        // Clear input field and disable button again
-        document.querySelector('#channel').value = '';
-        document.querySelector('#channel-submit').disabled = true;
-
-        // Stop form from submitting
-        return false;
-    };
-    
 
     // Listen for logout event
     document.querySelector('#logout').onclick = () => {
         // Remove name from local storage
         localStorage.removeItem('name');
+        console.log("logged out");
 
         // Unhide display name form and clear name
         document.querySelector('#name-form').style.display='block';
