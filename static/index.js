@@ -68,9 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const channel = document.querySelector('#channel').value;
             socket.emit('submit channel', {'channel': channel});
 
+            // Clear input form
+            document.querySelector('#channel').value = '';
+            
             // Stop form from submitting
             return false;
         };
+    });
+
+    // If the channel already exists, alert the user who made the submission
+    socket.on('submit fail', data => {
+        console.log("you fail");
+        alert("This channel already exists");
     });
 
     // When a new channel is created, add to the unordered list
@@ -80,6 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
         li.innerHTML = `#${data.channel}`;
         document.querySelector('#channel-list').append(li);
     });
+
+
 
 
     // Listen for logout event

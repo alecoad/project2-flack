@@ -19,7 +19,11 @@ def index():
 @socketio.on("submit channel")
 def channel(data):
     channel = data["channel"]
-    emit("create channel", {"channel": channel}, broadcast=True)
+    if channel in channels:
+        emit("submit fail", broadcast=False)
+    else:
+        channels.append(channel)
+        emit("create channel", {"channel": channel}, broadcast=True)
 
 
 if __name__ == '__main__':
