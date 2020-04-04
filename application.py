@@ -7,23 +7,34 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-# Store list of all the channels
-channels = []
+# Create a chat class to hold up to 100 messages for each channel
+class Chat:
+    def __init__(self, channel, messages):
+        self.channel = channel
+        self.messages = messages
 
+# Create a list to hold all the Chat objects
+chats = []
 
 @app.route("/")
 def index():
-    return render_template("index.html", channels=channels)
+    return render_template("index.html", chats=chats)
 
 
 @socketio.on("submit channel")
-def channel(data):
+def submit_channel(data):
     channel = data["channel"]
-    if channel in channels:
-        emit("submit fail", broadcast=False)
+
+    # Check chat list for channel name, kickback if duplicate
+    for chat in chats:
+        if channel in chat.channel:
+            emit("submit fail", broadcast=False)
+            break;
     else:
-        channels.append(channel)
+        chats.append(Chat(channel, []))
         emit("create channel", {"channel": channel}, broadcast=True)
+
+
 
 
 if __name__ == '__main__':

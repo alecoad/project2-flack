@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Clear input form
             document.querySelector('#channel').value = '';
-            
+
             // Stop form from submitting
             return false;
         };
@@ -89,6 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
         li.innerHTML = `#${data.channel}`;
         document.querySelector('#channel-list').append(li);
     });
+
+    // CHANNEL LIST
 
 
 

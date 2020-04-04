@@ -30,15 +30,26 @@
         <h1 id="name-display">DISPLAY NAME</h1>
 
         <h2>Channels</h2>
-        <ul id="channel-list">
-            {% for channel in channels %}
-                <li>#{{ channel }}</li>
-            {% endfor %}
-        </ul>
         <form id="channel-form">
             <input id="channel" autocomplete="off" placeholder="Channel Name" type="text">
             <input id="channel-submit" type="submit">
         </form>
+
+        <ul id="channel-list">
+            {% for channel in chats.channel %}
+                <li>#{{ channel }}</li>
+            {% endfor %}
+        </ul>
+
+        <h1>We are in a channel here:</h1>
+        <ul id="nav">
+            <li><a href="" class="nav-link" data-page="first">First Page</a></li>
+            <li><a href="" class="nav-link" data-page="second">Second Page</a></li>
+            <li><a href="" class="nav-link" data-page="third">Third Page</a></li>
+        </ul>
+        <hr>
+        <div id="body">
+        </div>
 
         <footer>
             <button id="logout" type="button" onclick="localStorage.clear()">Log Out</button>
