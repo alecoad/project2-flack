@@ -113,7 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.channel-link').forEach(link => {
         link.onclick = () => {
             const page = link.dataset.page;
-            load_page(page);
+            //load_page(page);
+            load_page('channel');
             return false;
         };
     });
@@ -137,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 window.onpopstate = e => {
     const data = e.state;
     document.title = data.title;
-    document.querySelector('#body').innerHTML = data.text;
+    document.querySelector('#chatroom').innerHTML = data.text;
 };
 
 // Renders contents of the chat in main view.
@@ -146,7 +147,7 @@ function load_page(name) {
     request.open('GET', `/${name}`);
     request.onload = () => {
         const response = request.responseText;
-        document.querySelector('#body').innerHTML = response;
+        document.querySelector('#chatroom').innerHTML = response;
 
         // Push state to URL.
         document.title = name;

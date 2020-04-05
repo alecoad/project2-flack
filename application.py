@@ -17,11 +17,13 @@ class Chat:
 chats = []
 
 # Test chats
-chat1 = Chat("ONE", [('hi', 'andrew', 1), ('what?', 'ellie', 2), ('bye', 'gary', 3)])
-chat2 = Chat("TWO", [('hello', 'andrew', 10), ('who?', 'ellie', 20), ('bye, bye!', 'gary', 30)])
+#chat1 = Chat("ONE", [('hi', 'andrew', 1), ('what?', 'ellie', 2), ('bye', 'gary', 3)])
+#chat2 = Chat("TWO", [('hello', 'andrew', 10), ('who?', 'ellie', 20), ('bye, bye!', 'gary', 30)])
 
-chats.append(chat1)
-chats.append(chat2)
+#chats.append(chat1)
+#chats.append(chat2)
+
+message = "you've reached the chatroom"
 
 
 @app.route("/")
@@ -43,10 +45,9 @@ def submit_channel(data):
         emit("create channel", {"channel": channel}, broadcast=True)
 
 
-@app.route("/channel/<name>")
-def channel(chat):
-    chat = chat
-    return render_template("index.html", chats=chat)
+@app.route("/channel")
+def channel():
+    return message
 
 
 
