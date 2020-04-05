@@ -46,12 +46,14 @@
 
         <div id="chatroom">
             <h1 id="chat-channel"></h1>
+            <ul id="message-list">
+            </ul>                
         </div>
 
         <hr>
         <form id="message-form">
             <div class="form-group">
-                <textarea autocomplete="off" class="form-control" name="message" required></textarea>
+                <textarea id="message" autocomplete="off" class="form-control" name="message" required></textarea>
             </div>
             <button class="btn btn-primary" id="message-submit" type="submit">Submit</button>
         </form>

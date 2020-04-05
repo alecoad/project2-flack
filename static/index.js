@@ -74,6 +74,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // Stop form from submitting
             return false;
         };
+
+        // "Submit message" event
+        document.querySelector('#message-form').onsubmit = () => {
+            console.log('message submitted');
+            const message = document.querySelector('#message').value;
+            socket.emit('submit message', {'message': message});
+
+            // Clear input form
+            document.querySelector('#message').value = '';
+            console.log('submit sent');
+
+            // Stop form from submitting
+            return false;
+        }
     });
 
     // If the channel already exists, alert the user who made the submission
@@ -107,6 +121,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reload page to activate link
         // Perhaps another way would be to create links in JS?
         //location.reload();
+    });
+
+    // When a new message is created, add to the unordered list
+    socket.on('create message', data => {
+        console.log("received message");
+        const li = document.createElement('li');
+        document.querySelector('#message-list').append(li);
+        li.innerHTML = `${data.message}`;
+        console.log('message added to list');
     });
 
     // CHANNEL LIST

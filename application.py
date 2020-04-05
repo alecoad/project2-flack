@@ -45,6 +45,15 @@ def submit_channel(data):
         emit("create channel", {"channel": channel}, broadcast=True)
 
 
+@socketio.on("submit message")
+def submit_message(data):
+    message = data["message"]
+
+    # Add message to chats object list
+    # TODO
+    emit("create message", {"message": message}, broadcast=True)
+
+    
 
 if __name__ == '__main__':
     socketio.run(app)
