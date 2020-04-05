@@ -16,6 +16,14 @@ class Chat:
 # Create a list to hold all the Chat objects
 chats = []
 
+# Test chats
+chat1 = Chat("ONE", [('hi', 'andrew', 1), ('what?', 'ellie', 2), ('bye', 'gary', 3)])
+chat2 = Chat("TWO", [('hello', 'andrew', 10), ('who?', 'ellie', 20), ('bye, bye!', 'gary', 30)])
+
+chats.append(chat1)
+chats.append(chat2)
+
+
 @app.route("/")
 def index():
     return render_template("index.html", chats=chats)
@@ -34,6 +42,11 @@ def submit_channel(data):
         chats.append(Chat(channel, []))
         emit("create channel", {"channel": channel}, broadcast=True)
 
+
+@app.route("/channel/<name>")
+def channel(chat):
+    chat = chat
+    return render_template("index.html", chats=chat)
 
 
 

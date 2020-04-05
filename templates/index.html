@@ -25,28 +25,33 @@
     <body>
         <form id="name-form">
             <input id="name" autocomplete="off" autofocus placeholder="Display Name" type="text">
-            <input id="name-submit" type="submit">
+            <button class="btn btn-primary" id="name-submit" type="submit">Submit</button>
         </form>
         <h1 id="name-display">DISPLAY NAME</h1>
+
+        <hr>
 
         <h2>Channels</h2>
         <form id="channel-form">
             <input id="channel" autocomplete="off" placeholder="Channel Name" type="text">
-            <input id="channel-submit" type="submit">
+            <button class="btn btn-primary" id="channel-submit" type="submit">Submit</button>
         </form>
 
         <ul id="channel-list">
-            {% for channel in chats.channel %}
-                <li>#{{ channel }}</li>
+            {% for chat in chats %}
+                <li><a href="" class="channel-link" data-page="">#{{ chat.channel }}</a></li>
             {% endfor %}
         </ul>
+        <hr>
 
-        <h1>We are in a channel here:</h1>
-        <ul id="nav">
-            <li><a href="" class="nav-link" data-page="first">First Page</a></li>
-            <li><a href="" class="nav-link" data-page="second">Second Page</a></li>
-            <li><a href="" class="nav-link" data-page="third">Third Page</a></li>
-        </ul>
+        <h1>Channel Messages</h1>
+        <form id="message-form">
+            <div class="form-group">
+                <textarea autocomplete="off" class="form-control" name="message" required></textarea>
+            </div>
+            <button class="btn btn-primary" id="message-submit" type="submit">Submit</button>
+        </form>
+
         <hr>
         <div id="body">
         </div>

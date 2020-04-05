@@ -86,11 +86,37 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('create channel', data => {
         console.log("received");
         const li = document.createElement('li');
-        li.innerHTML = `#${data.channel}`;
+
         document.querySelector('#channel-list').append(li);
+
+        // Create link with data attribute
+        console.log("creating link");
+        const a = document.createElement('a');
+        a.href = '';
+        a.classList.add('channel-link');
+        a.dataset.page = `${data.channel}`;
+        a.innerHTML = `#${data.channel}`;
+        console.log('done');
+
+        // Add anchor tag to list element
+        li.append(a);
+        console.log('appended');
+
+        // Reload page to activate link
+        // Perhaps another way would be to create links in JS?
+        //location.reload();
     });
 
     // CHANNEL LIST
+
+    // Set links up to load new pages.
+    document.querySelectorAll('.channel-link').forEach(link => {
+        link.onclick = () => {
+            const page = link.dataset.page;
+            load_page(page);
+            return false;
+        };
+    });
 
 
 
@@ -106,3 +132,25 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#name-display').innerHTML = 'DISPLAY NAME';
     };
 });
+
+// Update chat messages on popping state.
+window.onpopstate = e => {
+    const data = e.state;
+    document.title = data.title;
+    document.querySelector('#body').innerHTML = data.text;
+};
+
+// Renders contents of the chat in main view.
+function load_page(name) {
+    const request = new XMLHttpRequest();
+    request.open('GET', `/${name}`);
+    request.onload = () => {
+        const response = request.responseText;
+        document.querySelector('#body').innerHTML = response;
+
+        // Push state to URL.
+        document.title = name;
+        history.pushState({'title': name, 'text': response}, name, name);
+    };
+    request.send();
+}
