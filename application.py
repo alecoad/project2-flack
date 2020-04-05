@@ -23,7 +23,7 @@ chats = []
 #chats.append(chat1)
 #chats.append(chat2)
 
-message = "you've reached the chatroom"
+message = "you've reached the chatroom of: "
 
 
 @app.route("/")
@@ -43,11 +43,6 @@ def submit_channel(data):
     else:
         chats.append(Chat(channel, []))
         emit("create channel", {"channel": channel}, broadcast=True)
-
-
-@app.route("/channel")
-def channel():
-    return message
 
 
 

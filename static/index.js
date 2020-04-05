@@ -94,7 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const a = document.createElement('a');
         a.href = '';
         a.classList.add('channel-link');
+        console.log('dokljasldfne');
         a.dataset.page = `${data.channel}`;
+        console.log('doLKAJSDLKFne');
         a.innerHTML = `#${data.channel}`;
         console.log('done');
 
@@ -109,15 +111,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CHANNEL LIST
 
-    // Set links up to load new pages.
+    // When a channel link is clicked, go to that chatroom
     document.querySelectorAll('.channel-link').forEach(link => {
         link.onclick = () => {
-            const page = link.dataset.page;
-            //load_page(page);
-            load_page('channel');
+            console.log("link clicked");
+
+            // Display the channel name of the chat
+            const channel = link.innerHTML;
+            console.log(channel);
+
+            // Store channel name in local storage
+            localStorage.setItem('channel', channel);
+
+            // Display the channel name
+            document.querySelector('#chat-channel').innerHTML = channel;
+
+            // Stop form from submitting
             return false;
         };
     });
+
+
+
+    // Set links up to load new pages.
+//    document.querySelectorAll('.channel-link').forEach(link => {
+//        link.onclick = () => {
+//            const page = link.dataset.page;
+            //load_page(page);
+//            load_page('channel');
+//            return false;
+//        };
+//    });
 
 
 
@@ -135,23 +159,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Update chat messages on popping state.
-window.onpopstate = e => {
-    const data = e.state;
-    document.title = data.title;
-    document.querySelector('#chatroom').innerHTML = data.text;
-};
+//window.onpopstate = e => {
+//    const data = e.state;
+//    document.title = data.title;
+//    document.querySelector('#chatroom').innerHTML = data.text;
+//};
 
 // Renders contents of the chat in main view.
-function load_page(name) {
-    const request = new XMLHttpRequest();
-    request.open('GET', `/${name}`);
-    request.onload = () => {
-        const response = request.responseText;
-        document.querySelector('#chatroom').innerHTML = response;
+//function load_page(name) {
+//    const request = new XMLHttpRequest();
+//    request.open('GET', `/channel/${name}`);
+//    request.onload = () => {
+//        const response = request.responseText;
+//        document.querySelector('#chatroom').innerHTML = response;
 
         // Push state to URL.
-        document.title = name;
-        history.pushState({'title': name, 'text': response}, name, name);
-    };
-    request.send();
-}
+//        document.title = name;
+//        history.pushState({'title': name, 'text': response}, name, name);
+//    };
+//    request.send();
+//}
