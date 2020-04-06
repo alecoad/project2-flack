@@ -38,8 +38,8 @@
         </form>
 
         <ul id="channel-list">
-            {% for chat in chats %}
-                <li><a href="" class="channel-link" data-page=chat.channel>#{{ chat.channel }}</a></li>
+            {% for channel in chats %}
+                <li><a href="" class="channel-link">{{ channel }}</a></li>
             {% endfor %}
         </ul>
         <hr>
@@ -47,7 +47,14 @@
         <div id="chatroom">
             <h1 id="chat-channel"></h1>
             <ul id="message-list">
-            </ul>                
+                {% for messages in chats[current_channel] %}
+                    <li>
+                        <h5>{{ messages[1] }}</h5>
+                        <h6>{{ messages[2] }}</h6>
+                        <p>{{ messages[0] }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
 
         <hr>

@@ -44,6 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("stored name");
     }
 
+    // Check for last channel and display
+    if (localStorage.getItem('channel')) {
+        const channel = localStorage.getItem('channel');
+        document.querySelector('#chat-channel').innerHTML = channel;
+    }
+
     // CHANNEL CREATION
 
     // By default, channel submit button is disabled
@@ -56,6 +62,34 @@ document.addEventListener('DOMContentLoaded', () => {
         else
             document.querySelector('#channel-submit').disabled = true;
     };
+
+    // CHANNEL LIST
+
+    // When a channel link is clicked, go to that chatroom
+    document.querySelectorAll('.channel-link').forEach(link => {
+        link.onclick = () => {
+            console.log("link clicked");
+
+            // Get the channel name of the chat
+            const channel = link.innerHTML;
+            console.log(channel);
+
+            // Store channel name in local storage
+            localStorage.setItem('channel', channel);
+
+            // Display the channel name
+            document.querySelector('#chat-channel').innerHTML = channel;
+
+            // Clear messages from past channel
+            document.querySelector('#message-list').innerHTML = '';
+
+            // Reload to get messages server-side from channel
+            location.reload();
+            
+            // Stop form from submitting
+            return false;
+        };
+    });
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -78,8 +112,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // "Submit message" event
         document.querySelector('#message-form').onsubmit = () => {
             console.log('message submitted');
+
+            // Get the current channel and sender
+            const current_channel = localStorage.getItem('channel');
+            const sender = localStorage.getItem('name');
+
+            // Store the message and time sent
             const message = document.querySelector('#message').value;
-            socket.emit('submit message', {'message': message});
+            const time = Date.now();
+
+            console.log(current_channel, message, sender, time);
+
+            // Send the message, channel, name, and timestamp
+            socket.emit('submit message', {'channel': current_channel, 'message': message, 'name': sender, 'time': time});
 
             // Clear input form
             document.querySelector('#message').value = '';
@@ -106,11 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create link with data attribute
         console.log("creating link");
         const a = document.createElement('a');
-        a.href = '';
         a.classList.add('channel-link');
-        console.log('dokljasldfne');
-        a.dataset.page = `${data.channel}`;
-        console.log('doLKAJSDLKFne');
         a.innerHTML = `#${data.channel}`;
         console.log('done');
 
@@ -120,52 +161,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reload page to activate link
         // Perhaps another way would be to create links in JS?
-        //location.reload();
+        location.reload();
     });
 
     // When a new message is created, add to the unordered list
     socket.on('create message', data => {
-        console.log("received message");
+        console.log("GOT IT!");
+
+        // Create list element that will hold elements for the name, time, and message
         const li = document.createElement('li');
+        const h5 = document.createElement('h5');
+        const h6 = document.createElement('h6');
+        const p = document.createElement('p');
+
+        // Populate the elements
+        p.innerHTML = `${data.message}`;
+        h5.innerHTML = `${data.name}`;
+        h6.innerHTML = `${data.time}`;
+
+        // Add the list element
         document.querySelector('#message-list').append(li);
-        li.innerHTML = `${data.message}`;
-        console.log('message added to list');
+
+        // Add to the list element
+        li.append(h5, h6, p);
+        console.log('check you html');
     });
-
-    // CHANNEL LIST
-
-    // When a channel link is clicked, go to that chatroom
-    document.querySelectorAll('.channel-link').forEach(link => {
-        link.onclick = () => {
-            console.log("link clicked");
-
-            // Display the channel name of the chat
-            const channel = link.innerHTML;
-            console.log(channel);
-
-            // Store channel name in local storage
-            localStorage.setItem('channel', channel);
-
-            // Display the channel name
-            document.querySelector('#chat-channel').innerHTML = channel;
-
-            // Stop form from submitting
-            return false;
-        };
-    });
-
-
-
-    // Set links up to load new pages.
-//    document.querySelectorAll('.channel-link').forEach(link => {
-//        link.onclick = () => {
-//            const page = link.dataset.page;
-            //load_page(page);
-//            load_page('channel');
-//            return false;
-//        };
-//    });
-
 
 
 
@@ -181,24 +201,5 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
-// Update chat messages on popping state.
-//window.onpopstate = e => {
-//    const data = e.state;
-//    document.title = data.title;
-//    document.querySelector('#chatroom').innerHTML = data.text;
-//};
-
-// Renders contents of the chat in main view.
-//function load_page(name) {
-//    const request = new XMLHttpRequest();
-//    request.open('GET', `/channel/${name}`);
-//    request.onload = () => {
-//        const response = request.responseText;
-//        document.querySelector('#chatroom').innerHTML = response;
-
-        // Push state to URL.
-//        document.title = name;
-//        history.pushState({'title': name, 'text': response}, name, name);
-//    };
-//    request.send();
-//}
+// Get current time function
+// TODO

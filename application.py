@@ -7,14 +7,11 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-# Create a chat class to hold up to 100 messages for each channel
-class Chat:
-    def __init__(self, channel, messages):
-        self.channel = channel
-        self.messages = messages
+# Create a list of dicts to hold all the Chat objects
+chats = {}
 
-# Create a list to hold all the Chat objects
-chats = []
+# Create a variable to store the current channel
+current_channel = 'two';
 
 # Test chats
 #chat1 = Chat("ONE", [('hi', 'andrew', 1), ('what?', 'ellie', 2), ('bye', 'gary', 3)])
@@ -23,12 +20,10 @@ chats = []
 #chats.append(chat1)
 #chats.append(chat2)
 
-message = "you've reached the chatroom of: "
-
 
 @app.route("/")
 def index():
-    return render_template("index.html", chats=chats)
+    return render_template("index.html", chats=chats, current_channel=current_channel)
 
 
 @socketio.on("submit channel")
@@ -37,23 +32,28 @@ def submit_channel(data):
 
     # Check chat list for channel name, kickback if duplicate
     for chat in chats:
-        if channel in chat.channel:
+        if channel in chat:
             emit("submit fail", broadcast=False)
             break;
     else:
-        chats.append(Chat(channel, []))
+        chats.update({channel:[]})
         emit("create channel", {"channel": channel}, broadcast=True)
+
 
 
 @socketio.on("submit message")
 def submit_message(data):
+    channel = data["channel"]
+    name = data["name"]
     message = data["message"]
+    time = data["time"]
 
-    # Add message to chats object list
-    # TODO
-    emit("create message", {"message": message}, broadcast=True)
+    # Add the message as the channel key's value
+    chats[channel].append((message, name, time))
 
-    
+    emit("create message", {"message": message, "name": name, "time": time}, broadcast=True)
+
+
 
 if __name__ == '__main__':
     socketio.run(app)
