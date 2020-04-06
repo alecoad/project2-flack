@@ -40,6 +40,12 @@ def submit_channel(data):
         emit("create channel", {"channel": channel}, broadcast=True)
 
 
+@socketio.on("join chat")
+def join_chat(data):
+    current_channel = data["channel"]
+    channel_messages = chats[current_channel]
+    emit("chat joined", {"channel": current_channel, "messages": channel_messages}, broadcast=False)
+
 
 @socketio.on("submit message")
 def submit_message(data):
@@ -51,7 +57,7 @@ def submit_message(data):
     # Add the message as the channel key's value
     chats[channel].append((message, name, time))
 
-    emit("create message", {"message": message, "name": name, "time": time}, broadcast=True)
+    emit("create message", {"channel": channel, "message": message, "name": name, "time": time}, broadcast=True)
 
 
 

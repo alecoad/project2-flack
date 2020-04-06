@@ -65,31 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CHANNEL LIST
 
-    // When a channel link is clicked, go to that chatroom
-    document.querySelectorAll('.channel-link').forEach(link => {
-        link.onclick = () => {
-            console.log("link clicked");
 
-            // Get the channel name of the chat
-            const channel = link.innerHTML;
-            console.log(channel);
-
-            // Store channel name in local storage
-            localStorage.setItem('channel', channel);
-
-            // Display the channel name
-            document.querySelector('#chat-channel').innerHTML = channel;
-
-            // Clear messages from past channel
-            document.querySelector('#message-list').innerHTML = '';
-
-            // Reload to get messages server-side from channel
-            location.reload();
-            
-            // Stop form from submitting
-            return false;
-        };
-    });
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -108,6 +84,34 @@ document.addEventListener('DOMContentLoaded', () => {
             // Stop form from submitting
             return false;
         };
+
+        // When a channel link is clicked, go to that chatroom
+        document.querySelectorAll('.channel-link').forEach(link => {
+            link.onclick = () => {
+                console.log("link clicked");
+
+                // Get the channel name of the chat
+                const channel = link.innerHTML;
+                console.log(channel);
+
+                // Store channel name in local storage
+                //localStorage.setItem('channel', channel);
+
+                // Display the channel name
+                //document.querySelector('#chat-channel').innerHTML = channel;
+
+                // Clear messages from past channel
+                //document.querySelector('#message-list').innerHTML = '';
+
+                // Reload to get messages server-side from channel
+                //location.reload();
+
+                socket.emit('join chat', {'channel': channel});
+                console.log("emitted");
+                // Stop form from submitting
+                return false;
+            };
+        });
 
         // "Submit message" event
         document.querySelector('#message-form').onsubmit = () => {
@@ -164,27 +168,70 @@ document.addEventListener('DOMContentLoaded', () => {
         location.reload();
     });
 
-    // When a new message is created, add to the unordered list
+    socket.on('chat joined', data => {
+        console.log("recieved");
+
+        const channel = data.channel;
+
+        // Store channel name in local storage
+        localStorage.setItem('channel', channel);
+
+        // Display the channel name
+        document.querySelector('#chat-channel').innerHTML = channel;
+
+        // Clear messages from past channel
+        document.querySelector('#message-list').innerHTML = '';
+
+        // Display messages stored server-side
+        console.log(data.messages.length);
+        for (let i = 0; i < data.messages.length; i++) {
+            // Create list element that will hold elements for the name, time, and message
+            const li = document.createElement('li');
+            const h5 = document.createElement('h5');
+            const h6 = document.createElement('h6');
+            const p = document.createElement('p');
+
+            // Populate the elements
+            p.innerHTML = `${data.messages[i][0]}`;
+            h5.innerHTML = `${data.messages[i][1]}`;
+            h6.innerHTML = `${data.messages[i][2]}`;
+
+            // Add the list element
+            document.querySelector('#message-list').append(li);
+
+            // Add to the list element
+            li.append(h5, h6, p);
+        }
+        console.log(`${data.channel}`);
+        console.log(`${data.messages}`)
+        // Populate the messages!
+    });
+
+    // When a new message is created, add to the unordered list if in that channel
     socket.on('create message', data => {
         console.log("GOT IT!");
 
-        // Create list element that will hold elements for the name, time, and message
-        const li = document.createElement('li');
-        const h5 = document.createElement('h5');
-        const h6 = document.createElement('h6');
-        const p = document.createElement('p');
+        if (localStorage.getItem('channel') == data.channel) {
+            // Create list element that will hold elements for the name, time, and message
+            const li = document.createElement('li');
+            const h5 = document.createElement('h5');
+            const h6 = document.createElement('h6');
+            const p = document.createElement('p');
 
-        // Populate the elements
-        p.innerHTML = `${data.message}`;
-        h5.innerHTML = `${data.name}`;
-        h6.innerHTML = `${data.time}`;
+            // Populate the elements
+            p.innerHTML = `${data.message}`;
+            h5.innerHTML = `${data.name}`;
+            h6.innerHTML = `${data.time}`;
 
-        // Add the list element
-        document.querySelector('#message-list').append(li);
+            // Add the list element
+            document.querySelector('#message-list').append(li);
 
-        // Add to the list element
-        li.append(h5, h6, p);
-        console.log('check you html');
+            // Add to the list element
+            li.append(h5, h6, p);
+            console.log('if worked');
+        }
+        else 
+            console.log('if did not work');
     });
 
 
