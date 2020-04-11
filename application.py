@@ -7,19 +7,11 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-# Create a list of dicts to hold all the Chat objects
+# Create a dictionary to hold all the chats
+# The key is the channel, the value is a list of the messages in that channel
 chats = {}
 
-# Create a variable to store the current channel
-current_channel = 'two';
-
-# Test chats
-#chat1 = Chat("ONE", [('hi', 'andrew', 1), ('what?', 'ellie', 2), ('bye', 'gary', 3)])
-#chat2 = Chat("TWO", [('hello', 'andrew', 10), ('who?', 'ellie', 20), ('bye, bye!', 'gary', 30)])
-
-#chats.append(chat1)
-#chats.append(chat2)
-
+current_channel = None;
 
 @app.route("/")
 def index():
@@ -30,20 +22,25 @@ def index():
 def submit_channel(data):
     channel = data["channel"]
 
-    # Check chat list for channel name, kickback if duplicate
+    # Go through each chat
     for chat in chats:
+        # Check for duplicate channel name
         if channel in chat:
+            # Tell JS to alert the submitter only
             emit("submit fail", broadcast=False)
             break;
     else:
+        # Add the channel and an empty list for messages
         chats.update({channel:[]})
         emit("create channel", {"channel": channel}, broadcast=True)
 
 
 @socketio.on("join chat")
 def join_chat(data):
+    # Get the channel and messages from the clicked channel
     current_channel = data["channel"]
     channel_messages = chats[current_channel]
+    # Tell JS to display the current channel and the messages to the user who clicked the channel only
     emit("chat joined", {"channel": current_channel, "messages": channel_messages}, broadcast=False)
 
 

@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Hide channel and message submission initially
+    document.querySelector('#logged-in').style.display = 'none';
     // DISPLAY NAME
 
     // Check for display name in local storage
     if (!localStorage.getItem('name')) {
-
         // By default, name submit button is disabled
         document.querySelector('#name-submit').disabled = true;
-
         // Enable button only if there is text in the input field
         document.querySelector('#name').onkeyup = () => {
             if (document.querySelector('#name').value.length > 0)
@@ -18,30 +18,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set display name from user input
         document.querySelector('#name-form').onsubmit = () => {
-            console.log('name submitted');
-            const name = document.querySelector('#name').value;
 
+            const name = document.querySelector('#name').value;
             // Store name in local storage
             localStorage.setItem('name', name);
-
             // Display the name
             document.querySelector('#name-display').innerHTML = name;
-
-            // Clear and hide the input form
-            document.querySelector('#name').value = '';
-            document.querySelector('#name-form').style.display='none';
-
+            // Clear the input form
+            clearContent('#name-form');
+            // Show channel and message submission
+            document.querySelector('#logged-in').style.display = 'block';
             // Stop form from submitting
             return false;
         };
     }
 
     else {
+        // Show channel and message submission
+        document.querySelector('#logged-in').style.display = 'block';
         // Remove the input form and display the name from local storage
-        document.querySelector('#name-form').style.display='none';
+        clearContent('#name-form');
         const name = localStorage.getItem('name');
         document.querySelector('#name-display').innerHTML = name;
-        console.log("stored name");
     }
 
     // Check for last channel and display
@@ -50,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#chat-channel').innerHTML = channel;
     }
 
-    // CHANNEL CREATION
+    // CHANNEL CREATION BUTTON
 
     // By default, channel submit button is disabled
     document.querySelector('#channel-submit').disabled = true;
@@ -65,8 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CHANNEL LIST
 
-
-
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -74,12 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Form submission should emit a "submit channel" event
         document.querySelector('#channel-form').onsubmit = () => {
-            console.log("submitted");
             const channel = document.querySelector('#channel').value;
             socket.emit('submit channel', {'channel': channel});
 
             // Clear input form
-            document.querySelector('#channel').value = '';
+            clearContent('#channel');
 
             // Stop form from submitting
             return false;
@@ -88,26 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // When a channel link is clicked, go to that chatroom
         document.querySelectorAll('.channel-link').forEach(link => {
             link.onclick = () => {
-                console.log("link clicked");
-
                 // Get the channel name of the chat
                 const channel = link.innerHTML;
-                console.log(channel);
-
-                // Store channel name in local storage
-                //localStorage.setItem('channel', channel);
-
-                // Display the channel name
-                //document.querySelector('#chat-channel').innerHTML = channel;
-
-                // Clear messages from past channel
-                //document.querySelector('#message-list').innerHTML = '';
-
-                // Reload to get messages server-side from channel
-                //location.reload();
-
+                // Grab the channel chat data server-side
                 socket.emit('join chat', {'channel': channel});
-                console.log("emitted");
                 // Stop form from submitting
                 return false;
             };
@@ -142,49 +121,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // If the channel already exists, alert the user who made the submission
     socket.on('submit fail', data => {
-        console.log("you fail");
-        alert("This channel already exists");
+        alert('This channel already exists.');
     });
 
     // When a new channel is created, add to the unordered list
     socket.on('create channel', data => {
-        console.log("received");
+        // Create list element
         const li = document.createElement('li');
-
+        // Add the list element to the channel list
         document.querySelector('#channel-list').append(li);
-
-        // Create link with data attribute
-        console.log("creating link");
+        // Create anchor tag
         const a = document.createElement('a');
+        // Give it class and display
         a.classList.add('channel-link');
-        a.innerHTML = `#${data.channel}`;
-        console.log('done');
-
-        // Add anchor tag to list element
+        a.innerHTML = `${data.channel}`;
+        // Add anchor tag to the list element
         li.append(a);
-        console.log('appended');
-
-        // Reload page to activate link
-        // Perhaps another way would be to create links in JS?
+        // Reload page to activate link (Is there a better way?)
         location.reload();
     });
 
     socket.on('chat joined', data => {
-        console.log("recieved");
-
         const channel = data.channel;
-
         // Store channel name in local storage
         localStorage.setItem('channel', channel);
-
         // Display the channel name
         document.querySelector('#chat-channel').innerHTML = channel;
-
         // Clear messages from past channel
-        document.querySelector('#message-list').innerHTML = '';
-
+        clearContent('#message-list');
         // Display messages stored server-side
-        console.log(data.messages.length);
         for (let i = 0; i < data.messages.length; i++) {
             // Create list element that will hold elements for the name, time, and message
             const li = document.createElement('li');
@@ -203,9 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add to the list element
             li.append(h5, h6, p);
         }
-        console.log(`${data.channel}`);
-        console.log(`${data.messages}`)
-        // Populate the messages!
+        //console.log(`${data.channel}`);
+        //console.log(`${data.messages}`)
     });
 
     // When a new message is created, add to the unordered list if in that channel

@@ -31,39 +31,41 @@
 
         <hr>
 
-        <h2>Channels</h2>
-        <form id="channel-form">
-            <input id="channel" autocomplete="off" placeholder="Channel Name" type="text">
-            <button class="btn btn-primary" id="channel-submit" type="submit">Submit</button>
-        </form>
+        <div id="logged-in">
+            <h2>Channels</h2>
+            <form id="channel-form">
+                <input id="channel" autocomplete="off" placeholder="Channel Name" type="text">
+                <button class="btn btn-primary" id="channel-submit" type="submit">Submit</button>
+            </form>
 
-        <ul id="channel-list">
-            {% for channel in chats %}
-                <li><a href="" class="channel-link">{{ channel }}</a></li>
-            {% endfor %}
-        </ul>
-        <hr>
-
-        <div id="chatroom">
-            <h1 id="chat-channel"></h1>
-            <ul id="message-list">
-                <!--{% for messages in chats[current_channel] %}
-                    <li>
-                        <h5>{{ messages[1] }}</h5>
-                        <h6>{{ messages[2] }}</h6>
-                        <p>{{ messages[0] }}</p>
-                    </li>
-                {% endfor %}-->
+            <ul id="channel-list">
+                {% for channel in chats %}
+                    <li><a href="" class="channel-link">{{ channel }}</a></li>
+                {% endfor %}
             </ul>
-        </div>
+            <hr>
 
-        <hr>
-        <form id="message-form">
-            <div class="form-group">
-                <textarea id="message" autocomplete="off" class="form-control" name="message" required></textarea>
+            <div id="chatroom">
+                <h1 id="chat-channel"></h1>
+                <ul id="message-list">
+                    <!--{% for messages in chats[current_channel] %}
+                        <li>
+                            <h5>{{ messages[1] }}</h5>
+                            <h6>{{ messages[2] }}</h6>
+                            <p>{{ messages[0] }}</p>
+                        </li>
+                    {% endfor %}-->
+                </ul>
             </div>
-            <button class="btn btn-primary" id="message-submit" type="submit">Submit</button>
-        </form>
+
+            <hr>
+            <form id="message-form">
+                <div class="form-group">
+                    <textarea id="message" autocomplete="off" class="form-control" name="message" required></textarea>
+                </div>
+                <button class="btn btn-primary" id="message-submit" type="submit">Send</button>
+            </form>
+        </div>
 
         <footer>
             <button id="logout" type="button" onclick="localStorage.clear()">Log Out</button>
