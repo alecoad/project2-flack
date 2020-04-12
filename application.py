@@ -9,7 +9,15 @@ socketio = SocketIO(app)
 
 # Create a dictionary to hold all the chats
 # The key is the channel, the value is a list of the messages in that channel
-chats = {}
+# chats = {}
+
+# 100 messages
+l = []
+for i in range(100):
+    l.append(["hun", i, "name", 2020])
+
+# Channel with 100 messages
+chats = {"hun": l}
 
 current_channel = None;
 
@@ -53,6 +61,10 @@ def submit_message(data):
 
     # Add the message as the channel key's value
     chats[channel].append((message, name, time))
+
+    # Keep the total messages under 100
+    if len(chats[channel]) > 100:
+        chats[channel].pop(0)
 
     emit("create message", {"channel": channel, "message": message, "name": name, "time": time}, broadcast=True)
 
