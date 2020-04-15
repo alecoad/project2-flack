@@ -1,5 +1,7 @@
 nav .navbar-brand {
+    font-family: 'Fredericka the Great', cursive;
     font-size: xx-large;
+    text-align: center;
     width: 168px;
 }
 
@@ -82,7 +84,7 @@ body {
 }
 
 #message-list li {
-    background-color: #add8e6;
+    background-color: rgb(120, 194, 173, 0.5);
     border: 1px solid #fff;
     border-radius: 5px;
     margin: 5px 0;
