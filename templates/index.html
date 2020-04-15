@@ -62,6 +62,7 @@
                         <button class="btn btn-secondary" id="channel-submit" type="submit">Submit</button>
                     </div>
                 </form>
+                <p id="photo-credit">Photo by<br><a href="https://unsplash.com/@eberhardgross">eberhard grossgasteiger</a><br>on <a href="https://unsplash.com/">Unsplash</a></p>
             </nav>
 
             <div id="content">
@@ -72,7 +73,7 @@
                     <div id="chatroom">
                         <h4 id="chat-intro">Please choose a conversation to join.</h4>
                         <h4 id="chat-channel"></h4>
-                        <ul id="message-list">
+                        <ul id="message-list" class="list-unstyled components">
                         </ul>
                     </div>
 
@@ -80,16 +81,12 @@
                         <form id="message-form">
                             <div class="form-group">
                                 <textarea id="message" class="form-control" autocomplete="off" name="message" required></textarea>
-                                <button class="btn btn-primary" id="message-submit" type="submit">Send</button>
+                                <button class="btn btn-primary float-right" id="message-submit" type="submit">Send</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
-        <footer>
-            Photo by eberhard grossgasteiger on Unsplash
-        </footer>
     </body>
 </html>

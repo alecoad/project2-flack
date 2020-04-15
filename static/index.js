@@ -156,17 +156,24 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < data.messages.length; i++) {
             // Create list element that will hold elements for the name, time, and message
             const li = document.createElement('li');
-            const h5 = document.createElement('h5');
-            const h6 = document.createElement('h6');
-            const p = document.createElement('p');
+            const id = document.createElement('p');
+            const name = document.createElement('span');
+            const time = document.createElement('span');
+            const message = document.createElement('p');
             // Populate the elements
-            p.innerHTML = `${data.messages[i][0]}`;
-            h5.innerHTML = `${data.messages[i][1]}`;
-            h6.innerHTML = `${data.messages[i][2]}`;
+            name.innerHTML = `${data.messages[i][1]}`;
+            time.innerHTML = `${data.messages[i][2]}`;
+            message.innerHTML = `${data.messages[i][0]}`;
+            // Give each element a class
+            name.classList.add('author');
+            time.classList.add('time-sent');
+            message.classList.add('text-message');
+            // Add the name and time spans to 'id' p tag
+            id.append(name, time);
+            // Add to the list element
+            li.append(id, message);
             // Add the list element
             document.querySelector('#message-list').append(li);
-            // Add to the list element
-            li.append(h5, h6, p);
         }
     });
 
@@ -174,17 +181,24 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('create message', data => {
         // Create list element that will hold elements for the name, time, and message
         const li = document.createElement('li');
-        const h5 = document.createElement('h5');
-        const h6 = document.createElement('h6');
-        const p = document.createElement('p');
+        const id = document.createElement('p');
+        const name = document.createElement('span');
+        const time = document.createElement('span');
+        const message = document.createElement('p');
         // Populate the elements
-        p.innerHTML = `${data.message}`;
-        h5.innerHTML = `${data.name}`;
-        h6.innerHTML = `${data.time}`;
+        name.innerHTML = `${data.name}`;
+        time.innerHTML = `${data.time}`;
+        message.innerHTML = `${data.message}`;
+        // Give each element a class
+        name.classList.add('author');
+        time.classList.add('time-sent');
+        message.classList.add('text-message');
+        // Add the name and time spans to 'id' p tag
+        id.append(name, time);
+        // Add to the list element
+        li.append(id, message);
         // Add the list element
         document.querySelector('#message-list').append(li);
-        // Add to the list element
-        li.append(h5, h6, p);
     });
 
     // Listen for logout event
