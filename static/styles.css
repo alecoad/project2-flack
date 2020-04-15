@@ -45,6 +45,10 @@ body {
     display: block;
 }
 
+#channel-list li a::before {
+    content: "# ";
+}
+
 #channel-list a:hover {
     color: #5a5a5a;
 }
