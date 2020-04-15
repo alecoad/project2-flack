@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hide channel and message submission initially
     document.querySelector('#logged-in').style.display = 'none';
+    // Keep chat id message hidden separately
+    document.querySelector('#chat-channel').style.display = 'none';
 
     // DISPLAY NAME
     // Check for display name in local storage
@@ -39,6 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
         clearContent('#name-form');
         const name = localStorage.getItem('name');
         document.querySelector('#name-display').innerHTML = name;
+        // Display last joined chat if available
+        if (localStorage.getItem('channel')) {
+            document.querySelector('#chat-channel').style.display = 'block';
+        }
     }
 
 
@@ -139,8 +145,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const channel = data.channel;
         // Store channel name in local storage
         localStorage.setItem('channel', channel);
+        // Clear the opening message
+        clearContent('#chat-intro');
         // Display the channel name
         document.querySelector('#chat-channel').innerHTML = channel;
+        document.querySelector('#chat-channel').style.display = 'block';
         // Clear messages from past channel
         clearContent('#message-list');
         // Display messages stored server-side
@@ -185,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('channel');
         // Unhide display name form and clear name
         document.querySelector('#name-form').style.display='block';
-        document.querySelector('#name-display').innerHTML = 'DISPLAY NAME';
         // Reload
         location.reload();
     };

@@ -65,12 +65,13 @@
             </nav>
 
             <div id="content">
-
-                <h1 id="name-display"></h1>
-
                 <div id="logged-in">
+
+                    <h2>Hello, <span id="name-display"></span>.</h2>
+
                     <div id="chatroom">
-                        <h1 id="chat-channel"></h1>
+                        <h4 id="chat-intro">Please choose a conversation to join.</h4>
+                        <h4 id="chat-channel"></h4>
                         <ul id="message-list">
                         </ul>
                     </div>
@@ -79,8 +80,8 @@
                         <form id="message-form">
                             <div class="form-group">
                                 <textarea id="message" class="form-control" autocomplete="off" name="message" required></textarea>
+                                <button class="btn btn-primary" id="message-submit" type="submit">Send</button>
                             </div>
-                            <button class="btn btn-primary" id="message-submit" type="submit">Send</button>
                         </form>
                     </div>
                 </div>
