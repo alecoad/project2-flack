@@ -3,6 +3,7 @@ nav .navbar-brand {
 }
 
 body {
+    /* Keep the body content beneath the fixed navbar */
     padding-top: 70px;
 }
 
@@ -45,19 +46,8 @@ body {
     width: 100%;
 }
 
-
-
 #content {
     margin-left: 216px;
     margin-right: 16px;
     width: 100%;
-}
-
-main .form-control
-{
-    /* center form controls */
-    display: inline-block;
-
-    /* override Bootstrap's 100% width for form controls */
-    width: auto;
 }
