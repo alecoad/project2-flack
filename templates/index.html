@@ -46,48 +46,45 @@
             </div>
         </nav>
 
-        <div id="sidebar">
+        <div class="wrapper">
+            <nav id="sidebar" class="navbar navbar-dark bg-primary border">
+                <h2 id="sidebar-header">Channels</h2>
 
-
-        </div>
-
-        <main class="container p-5">
-
-            <h1 id="name-display"></h1>
-
-            <div id="logged-in">
-                <h2>Channels</h2>
-                <form id="channel-form">
-                    <div class="form-group">
-                        <input id="channel" class="form-control" autocomplete="off" placeholder="Channel Name" type="text">
-                        <button class="btn btn-primary" id="channel-submit" type="submit">Submit</button>
-                    </div>
-                </form>
-
-                <ul id="channel-list">
+                <ul id="channel-list" class="list-unstyled components">
                     {% for channel in chats %}
                         <li><a href="" class="channel-link">{{ channel }}</a></li>
                     {% endfor %}
                 </ul>
-                <hr>
 
-                <div id="chatroom">
-                    <h1 id="chat-channel"></h1>
-                    <ul id="message-list">
-                    </ul>
-                </div>
+                <form id="channel-form">
+                    <div class="form-group">
+                        <input id="channel" class="form-control" autocomplete="off" placeholder="Channel Name" type="text" maxlength="16">
+                        <button class="btn btn-secondary" id="channel-submit" type="submit">Submit</button>
+                    </div>
+                </form>
+            </nav>
 
-                <hr>
+            <div id="content">
 
-                <div id="message-container">
-                    <form id="message-form">
-                        <div class="form-group">
-                            <textarea id="message" class="form-control" autocomplete="off" name="message" required></textarea>
-                        </div>
-                        <button class="btn btn-primary" id="message-submit" type="submit">Send</button>
-                    </form>
+                <h1 id="name-display"></h1>
+
+                <div id="logged-in">
+                    <div id="chatroom">
+                        <h1 id="chat-channel"></h1>
+                        <ul id="message-list">
+                        </ul>
+                    </div>
+
+                    <div id="message-container">
+                        <form id="message-form">
+                            <div class="form-group">
+                                <textarea id="message" class="form-control" autocomplete="off" name="message" required></textarea>
+                            </div>
+                            <button class="btn btn-primary" id="message-submit" type="submit">Send</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </main>
+        </div>
     </body>
 </html>
