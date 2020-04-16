@@ -147,6 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('channel', channel);
         // Clear the opening message
         clearContent('#chat-intro');
+        // Make sure the page is scrolled to the top
+        window.scrollTo(0, 0);
         // Display the channel name
         document.querySelector('#chat-channel').innerHTML = channel;
         document.querySelector('#chat-channel').style.display = 'block';
@@ -174,6 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
             li.append(id, message);
             // Add the list element
             document.querySelector('#message-list').append(li);
+            // Color the background depending on the sender
+            if (localStorage.getItem('name') == `${data.messages[i][1]}`)
+                li.style.backgroundColor = 'rgb(108, 195, 213, 0.6)';
         }
     });
 
@@ -199,6 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
         li.append(id, message);
         // Add the list element
         document.querySelector('#message-list').append(li);
+        // Color the background depending on the sender
+        if (localStorage.getItem('name') == `${data.name}`)
+            li.style.backgroundColor = 'rgb(108, 195, 213, 0.6)';
+        // Keep the page scrolled to the bottom
+        window.scrollTo(0, document.body.scrollHeight);
     });
 
     // Listen for logout event
