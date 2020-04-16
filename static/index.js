@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const sender = localStorage.getItem('name');
             // Alert the user if a channel hasn't been chosen yet
             if (!current_channel)
-                alert('You must choose a channel to submit a message');
+                alert('You must join a conversation first.');
             else {
                 // Store the message and time sent
                 const message = document.querySelector('#message').value;
