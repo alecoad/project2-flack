@@ -91,6 +91,7 @@ body {
 
 #message-list p {
     margin: 0;
+    width: 100%;
 }
 
 #message-form textarea {
@@ -107,6 +108,10 @@ body {
 .time-sent {
     font-size: 10px;
     color: #5a5a5a;
+}
+
+.delete-message {
+    float: right;
 }
 
 .text-message {

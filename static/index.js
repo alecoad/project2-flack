@@ -161,17 +161,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const id = document.createElement('p');
             const name = document.createElement('span');
             const time = document.createElement('span');
+            const close = document.createElement('span');
             const message = document.createElement('p');
             // Populate the elements
             name.innerHTML = `${data.messages[i][1]}`;
             time.innerHTML = `${data.messages[i][2]}`;
+            close.innerHTML = '&times;';
             message.innerHTML = `${data.messages[i][0]}`;
             // Give each element a class
             name.classList.add('author');
             time.classList.add('time-sent');
+            close.classList.add('delete-message');
             message.classList.add('text-message');
             // Add the name and time spans to 'id' p tag
-            id.append(name, time);
+            // Add the delete button for current user's messages only
+            if (localStorage.getItem('name') == `${data.messages[i][1]}`)
+                id.append(name, time, close);
+            else
+                id.append(name, time);
             // Add to the list element
             li.append(id, message);
             // Add the list element
@@ -184,22 +191,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When a new message is created, add to the unordered list
     socket.on('create message', data => {
-        // Create list element that will hold elements for the name, time, and message
+        // Create list element that will hold elements for the name, time, message, and close button
         const li = document.createElement('li');
         const id = document.createElement('p');
         const name = document.createElement('span');
         const time = document.createElement('span');
+        const close = document.createElement('span');
         const message = document.createElement('p');
         // Populate the elements
         name.innerHTML = `${data.name}`;
         time.innerHTML = `${data.time}`;
+        close.innerHTML = '&times;';
         message.innerHTML = `${data.message}`;
         // Give each element a class
         name.classList.add('author');
         time.classList.add('time-sent');
+        close.classList.add('delete-message');
         message.classList.add('text-message');
         // Add the name and time spans to 'id' p tag
-        id.append(name, time);
+        // Add the delete button for current user's messages only
+        if (localStorage.getItem('name') == `${data.name}`)
+            id.append(name, time, close);
+        else
+            id.append(name, time);
         // Add to the list element
         li.append(id, message);
         // Add the list element
