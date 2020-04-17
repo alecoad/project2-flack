@@ -69,5 +69,22 @@ def submit_message(data):
     emit("create message", {"channel": channel, "message": message, "name": name, "time": time}, broadcast=True)
 
 
+@socketio.on("delete message")
+def delete_message(data):
+    name = data["name"]
+    time = data["time"]
+    channel = data["channel"]
+
+    # Access the list of messages
+    messages = chats[channel]
+    # Iterate through the messages
+    for message in messages:
+        # Find the message tuple with the matching name and time
+        if message[1] == name and message[2] == time:
+            # Remove the message
+            messages.remove(message)
+
+    #emit("message deleted", {"name": name, "time": time, "channel": channel})
+
 if __name__ == '__main__':
     socketio.run(app)
