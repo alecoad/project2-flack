@@ -2,7 +2,7 @@
 
 Web Programming with Python and JavaScript
 
-This is FLASK, a single page messaging service mimicking Slack, but using Flask. Python handles the server-side storage of the different channels and messages within each channel. Flask-SocketIO enables communication between JavaScript and Python in order to update the channel and message submissions in real time.
+This is FLACK, a single page messaging service mimicking Slack, but using Flask. Python handles the server-side storage of the different channels and messages within each channel. Flask-SocketIO enables communication between JavaScript and Python in order to update the channel and message submissions in real time.
 
 All of the HTML is contained within `index.html` in the templates folder. Bootswatch's Minty theme was used for styling, along with custom styling and layout in `styles.css` within the `static` folder. (`static` also holds the favicon and background image.)
 
